@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "furnace"
+require "yayjs"
+require "trollop"
+
+options = Trollop.options do
+  version "YAYJS #{YAYJS::VERSION}"
+  banner "YAYJS - Furnace-powered Ruby to JavaScript compiler"
+
+  opt :input, "Input file name", type: String, required: true
+  opt :output, "Output file name", type: String, required: true
+end
+
+compiler = YAYJS::Compiler.new
+
+javascript = compiler.compile_file options[:input]
+
+File.open(options[:output], "w") do |file|
+  file.write javascript
+end
